@@ -53,7 +53,7 @@ public class GeneralCommands extends ListenerAdapter {
                 int range = (max - min) + 1;
                 event.reply(Integer.toString((int) (Math.random() * range) + min)).queue();
             }
-            case "help" -> event.reply("List of Commands\n").queue();
+            case "help" -> event.reply("List of Commands\nhttps://github.com/jxshie/veryrarebot\n").queue();
             case "pfp" -> {
                 OptionMapping userOption = event.getOption("user");
                 if (userOption == null) {
