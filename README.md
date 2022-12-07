@@ -1,6 +1,6 @@
-# veryrarebot
+# veryrarebot - General Purpose Discord Bot
 
-A discord bot made just for fun, and something to do that involves Java
+A Discord bot made for 
 
 Created with Discord JDA - https://github.com/DV8FromTheWorld/JDA
 
@@ -9,13 +9,15 @@ Hosted at - https://www.heroku.com/
 
 # Commands
 
-/help - Sends you to a page on my website that has a lists of commands
+/help - Sends you here!
 
 /ping - Replies with "Pong!"
 
+/howdy - Replies with "Howdy!"
+
 /welcome - veryrarebot will send a welcome message and mention you
 
-/roles - Will list all of the roles within the server
+/roles - Will list all the roles within the server
 
 /say - veryrarebot will say whatever you want it to
 
