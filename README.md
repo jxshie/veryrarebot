@@ -1,6 +1,6 @@
 # veryrarebot - General Purpose Discord Bot
 
-A Discord bot made for 
+A Discord bot made just for fun, and something to work on in my free time that involves Java.
 
 Created with Discord JDA - https://github.com/DV8FromTheWorld/JDA
 
