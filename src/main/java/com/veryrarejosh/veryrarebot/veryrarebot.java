@@ -1,7 +1,6 @@
 package com.veryrarejosh.veryrarebot;
 
-import com.veryrarejosh.veryrarebot.commands.commandManager;
-import com.veryrarejosh.veryrarebot.listeners.EventListener;
+import com.veryrarejosh.veryrarebot.commands.GeneralCommands;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -20,8 +19,8 @@ import javax.security.auth.login.LoginException;
  */
 public class veryrarebot {
 
-    private final Dotenv config;
     private final ShardManager shardManager;
+    private final Dotenv config;
 
     /**
      * Builds bot shards and registers commands and modules
@@ -29,12 +28,12 @@ public class veryrarebot {
      * @throws LoginException occurs if bot token is invalid.
      */
     public veryrarebot() throws LoginException {
+        config = Dotenv.configure().ignoreIfMissing().load();
+
         String token;
-        if (System.getenv("TOKEN") != null) {
-            config = null;
-            token = System.getenv("TOKEN");
+        if (config == null) {
+            token = System.getenv().get("TOKEN");
         } else {
-            config = Dotenv.configure().load();
             token = config.get("TOKEN");
         }
 
@@ -42,25 +41,12 @@ public class veryrarebot {
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.playing("/help"));
-        builder.enableIntents(
-                GatewayIntent.GUILD_MESSAGES,
-                GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.MESSAGE_CONTENT);
+        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT);
         shardManager = builder.build();
 
         //Register listeners
         shardManager.addEventListener(
-                new EventListener(),
-                new commandManager());
-    }
-
-    /**
-     * Retrieves the token from .env
-     *
-     * @return the token from .env for the bot.
-     */
-    public Dotenv getConfig() {
-        return config;
+                new GeneralCommands());
     }
 
     /**
