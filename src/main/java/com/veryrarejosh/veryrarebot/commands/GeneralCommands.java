@@ -78,6 +78,14 @@ public class GeneralCommands extends ListenerAdapter {
             }
             case "ping" -> event.reply("Pong!").queue();
             case "howdy" -> event.reply("Howdy!").queue();
+            case "flip" -> {
+                int flip = (int) (Math.random() * 2);
+                if (flip == 0) {
+                    event.reply("Heads").queue();
+                } else {
+                    event.reply("Tails").queue();
+                }
+            }
         }
     }
 
@@ -95,6 +103,7 @@ public class GeneralCommands extends ListenerAdapter {
         commandData.add(Commands.slash("help", "Sends a link to link of all the bot commands"));
         commandData.add(Commands.slash("ping", "Pong!"));
         commandData.add(Commands.slash("howdy", "Howdy!"));
+        commandData.add(Commands.slash("flip", "Flips a coin"));
 
         OptionData option1 = new OptionData(OptionType.STRING, "message", "The message you want the bot to say.", true);
         OptionData option2 = new OptionData(OptionType.INTEGER, "max", "The maximum number of your roll.", true);
