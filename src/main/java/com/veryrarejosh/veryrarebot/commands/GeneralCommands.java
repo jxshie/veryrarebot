@@ -39,10 +39,10 @@ public class GeneralCommands extends ListenerAdapter {
                         response.append(role.getAsMention()).append("\n");
                     }
                     event.getHook().sendMessage(response.toString()).queue();
-                }else {
+                } else {
                     StringBuilder response1 = new StringBuilder();
-                    for (Role role : Objects.requireNonNull(userOption.getAsMember().getRoles())) {
-                        response1.append(role.getAsMention().toString()).append("\n");
+                    for (Role role : Objects.requireNonNull(Objects.requireNonNull(userOption.getAsMember()).getRoles())) {
+                        response1.append(role.getAsMention()).append("\n");
                     }
                     event.getHook().sendMessage(response1.toString()).queue();
                 }
@@ -112,7 +112,7 @@ public class GeneralCommands extends ListenerAdapter {
         commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1));
         commandData.add(Commands.slash("roll", "Get the bot to roll a dice for you").addOptions(option2));
         commandData.add(Commands.slash("pfp", "Grab your own profile picture, or another persons.").addOptions(option3));
-        commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has."));
+        commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has.").addOptions(option4));
 
         event.getJDA().updateCommands().addCommands(commandData).queue();
     }
