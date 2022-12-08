@@ -31,12 +31,22 @@ public class GeneralCommands extends ListenerAdapter {
                 event.reply("Welcome to the server, **" + userTag + "**!").queue();
             }
             case "roles" -> {
-                event.deferReply().queue();
-                StringBuilder response = new StringBuilder();
-                for (Role role : Objects.requireNonNull(event.getGuild()).getRoles()) {
-                    response.append(role.getAsMention()).append("\n");
+                OptionMapping userOption = event.getOption("user");
+                if (userOption == null) {
+                    event.deferReply().queue();
+                    StringBuilder response = new StringBuilder();
+                    for (Role role : Objects.requireNonNull(event.getGuild()).getRoles()) {
+                        response.append(role.getAsMention()).append("\n");
+                    }
+                    event.getHook().sendMessage(response.toString()).queue();
+                }else {
+                    StringBuilder response1 = new StringBuilder();
+                    for (Role role : Objects.requireNonNull(userOption.getAsMember().getRoles())) {
+                        response1.append(role.getAsMention().toString()).append("\n");
+                    }
+                    event.getHook().sendMessage(response1.toString()).queue();
                 }
-                event.getHook().sendMessage(response.toString()).queue();
+
             }
             case "say" -> {
                 OptionMapping messageOption = event.getOption("message");
@@ -82,7 +92,6 @@ public class GeneralCommands extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
         commandData.add(Commands.slash("welcome", "Get welcomed by lovely, veryrarebot."));
-        commandData.add(Commands.slash("roles", "Display all available roles on the server."));
         commandData.add(Commands.slash("help", "Sends a link to link of all the bot commands"));
         commandData.add(Commands.slash("ping", "Pong!"));
         commandData.add(Commands.slash("howdy", "Howdy!"));
@@ -90,9 +99,11 @@ public class GeneralCommands extends ListenerAdapter {
         OptionData option1 = new OptionData(OptionType.STRING, "message", "The message you want the bot to say.", true);
         OptionData option2 = new OptionData(OptionType.INTEGER, "max", "The maximum number of your roll.", true);
         OptionData option3 = new OptionData(OptionType.USER, "user", "The user whose avatar you want.", false);
+        OptionData option4 = new OptionData(OptionType.USER, "user", "The user whose roles you want to list.", false);
         commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1));
         commandData.add(Commands.slash("roll", "Get the bot to roll a dice for you").addOptions(option2));
         commandData.add(Commands.slash("pfp", "Grab your own profile picture, or another persons.").addOptions(option3));
+        commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has."));
 
         event.getJDA().updateCommands().addCommands(commandData).queue();
     }
