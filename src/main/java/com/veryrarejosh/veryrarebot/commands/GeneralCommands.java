@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Class for general commands.
  *
@@ -35,13 +37,13 @@ public class GeneralCommands extends ListenerAdapter {
                 if (userOption == null) {
                     event.deferReply().queue();
                     StringBuilder response = new StringBuilder();
-                    for (Role role : Objects.requireNonNull(event.getGuild()).getRoles()) {
+                    for (Role role : requireNonNull(event.getGuild()).getRoles()) {
                         response.append(role.getAsMention()).append("\n");
                     }
                     event.getHook().sendMessage(response.toString()).queue();
                 } else {
                     StringBuilder response1 = new StringBuilder();
-                    for (Role role : Objects.requireNonNull(Objects.requireNonNull(userOption.getAsMember()).getRoles())) {
+                    for (Role role : Objects.requireNonNull(requireNonNull(userOption.getAsMember()).getRoles())) {
                         response1.append(role.getAsMention()).append("\n");
                     }
                     event.getHook().sendMessage(response1.toString()).queue();
@@ -56,18 +58,30 @@ public class GeneralCommands extends ListenerAdapter {
                 event.reply("Your message was sent").setEphemeral(true).queue();
             }
             case "roll" -> {
-                OptionMapping integerOption = event.getOption("max");
-                int min = 1;
-                assert integerOption != null;
-                int max = integerOption.getAsInt();
-                int range = (max - min) + 1;
-                event.reply(Integer.toString((int) (Math.random() * range) + min)).queue();
+                OptionMapping integerOption1 = event.getOption("max");
+                OptionMapping intergerOption2 = event.getOption("dice");
+
+                int dice = intergerOption2.getAsInt();
+
+                if (intergerOption2 == null) {
+                    int min = 1;
+                    assert integerOption1 != null;
+                    int max = integerOption1.getAsInt();
+                    int range = (max - min) + 1;
+                    event.reply(Integer.toString((int) (Math.random() * range) + min)).queue();
+                } else for (int counter = 0; counter < dice; counter++) {
+                    int min = 1;
+                    assert integerOption1 != null;
+                    int max = integerOption1.getAsInt();
+                    int range = (max - min) + 1;
+                    event.reply(Integer.toString((int) (Math.random() * range) + min)).queue();
+                }
             }
             case "help" -> event.reply("List of Commands\nhttps://github.com/jxshie/veryrarebot\n").queue();
             case "pfp" -> {
                 OptionMapping userOption = event.getOption("user");
                 if (userOption == null) {
-                    String userAvatar = Objects.requireNonNull(event.getMember()).getUser().getAvatarUrl();
+                    String userAvatar = requireNonNull(event.getMember()).getUser().getAvatarUrl();
                     assert userAvatar != null;
                     event.reply(userAvatar).complete();
                 } else {
@@ -105,12 +119,14 @@ public class GeneralCommands extends ListenerAdapter {
         commandData.add(Commands.slash("howdy", "Howdy!"));
         commandData.add(Commands.slash("flip", "Flips a coin"));
 
+
         OptionData option1 = new OptionData(OptionType.STRING, "message", "The message you want the bot to say.", true);
         OptionData option2 = new OptionData(OptionType.INTEGER, "max", "The maximum number of your roll.", true);
+        OptionData option02 = new OptionData(OptionType.INTEGER, "dice", "How many dice you want to roll at x, max", false);
         OptionData option3 = new OptionData(OptionType.USER, "user", "The user whose avatar you want.", false);
         OptionData option4 = new OptionData(OptionType.USER, "user", "The user whose roles you want to list.", false);
         commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1));
-        commandData.add(Commands.slash("roll", "Get the bot to roll a dice for you").addOptions(option2));
+        commandData.add(Commands.slash("roll", "Rolls a number between 1 and the max number you choose.").addOptions(option2));
         commandData.add(Commands.slash("pfp", "Grab your own profile picture, or another persons.").addOptions(option3));
         commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has.").addOptions(option4));
 
