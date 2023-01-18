@@ -59,17 +59,11 @@ public class GeneralCommands extends ListenerAdapter {
             }
             case "roll" -> {
                 OptionMapping integerOption1 = event.getOption("max");
-                OptionMapping intergerOption2 = event.getOption("dice");
+                OptionMapping integerOption2 = event.getOption("dice");
 
-                int dice = intergerOption2.getAsInt();
+                int dice = integerOption2.getAsInt();
 
-                if (intergerOption2 == null) {
-                    int min = 1;
-                    assert integerOption1 != null;
-                    int max = integerOption1.getAsInt();
-                    int range = (max - min) + 1;
-                    event.reply(Integer.toString((int) (Math.random() * range) + min)).queue();
-                } else for (int counter = 0; counter < dice; counter++) {
+                for (int counter = 0; counter < dice; counter++) {
                     int min = 1;
                     assert integerOption1 != null;
                     int max = integerOption1.getAsInt();
@@ -101,6 +95,7 @@ public class GeneralCommands extends ListenerAdapter {
                 }
             }
         }
+
     }
 
 
@@ -122,11 +117,11 @@ public class GeneralCommands extends ListenerAdapter {
 
         OptionData option1 = new OptionData(OptionType.STRING, "message", "The message you want the bot to say.", true);
         OptionData option2 = new OptionData(OptionType.INTEGER, "max", "The maximum number of your roll.", true);
-        OptionData option02 = new OptionData(OptionType.INTEGER, "dice", "How many dice you want to roll at x, max", false);
+        OptionData option02 = new OptionData(OptionType.INTEGER, "dice", "How many dice you want to roll at x, max", true);
         OptionData option3 = new OptionData(OptionType.USER, "user", "The user whose avatar you want.", false);
         OptionData option4 = new OptionData(OptionType.USER, "user", "The user whose roles you want to list.", false);
         commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1));
-        commandData.add(Commands.slash("roll", "Rolls a number between 1 and the max number you choose.").addOptions(option2));
+        commandData.add(Commands.slash("roll", "Rolls a number between 1 and the max number you choose.").addOptions(option2, option02));
         commandData.add(Commands.slash("pfp", "Grab your own profile picture, or another persons.").addOptions(option3));
         commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has.").addOptions(option4));
 
