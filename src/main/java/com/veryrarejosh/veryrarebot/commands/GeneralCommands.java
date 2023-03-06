@@ -1,9 +1,9 @@
 package com.veryrarejosh.veryrarebot.commands;
 
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,24 +30,6 @@ public class GeneralCommands extends ListenerAdapter {
             case "welcome" -> {
                 String userTag = event.getUser().getAsTag();
                 event.reply("Welcome to the server, **" + userTag + "**!").queue();
-            }
-            case "roles" -> {
-                OptionMapping userOption = event.getOption("user");
-                if (userOption == null) {
-                    event.deferReply().queue();
-                    StringBuilder response = new StringBuilder();
-                    for (Role role : requireNonNull(event.getGuild()).getRoles()) {
-                        response.append(role.getAsMention()).append("\n");
-                    }
-                    event.getHook().sendMessage(response.toString()).queue();
-                } else {
-                    StringBuilder response1 = new StringBuilder();
-                    for (Role role : Objects.requireNonNull(requireNonNull(userOption.getAsMember()).getRoles())) {
-                        response1.append(role.getAsMention()).append("\n");
-                    }
-                    event.getHook().sendMessage(response1.toString()).queue();
-                }
-
             }
             case "say" -> {
                 OptionMapping messageOption = event.getOption("message");
@@ -128,11 +109,10 @@ public class GeneralCommands extends ListenerAdapter {
         OptionData option2 = new OptionData(OptionType.INTEGER, "max", "The maximum number of your roll(s).", true);
         OptionData option02 = new OptionData(OptionType.INTEGER, "dice", "How many dice you want to roll.", true);
         OptionData option3 = new OptionData(OptionType.USER, "user", "The user whose avatar you want.", false);
-        OptionData option4 = new OptionData(OptionType.USER, "user", "The user whose roles you want to list.", false);
-        commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1));
+        commandData.add(Commands.slash("say", "Make the bot say a message.").addOptions(option1).setDefaultPermissions(DefaultMemberPermissions.DISABLED));
         commandData.add(Commands.slash("roll", "Rolls a number between 1 and the max number you choose.").addOptions(option02, option2));
         commandData.add(Commands.slash("pfp", "Grab your own profile picture, or another persons.").addOptions(option3));
-        commandData.add(Commands.slash("roles", "Display all available roles on the server, or check all the roles that a user has.").addOptions(option4));
+
 
         event.getJDA().updateCommands().addCommands(commandData).queue();
     }
