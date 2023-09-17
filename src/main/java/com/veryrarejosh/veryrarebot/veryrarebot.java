@@ -1,5 +1,6 @@
 package com.veryrarejosh.veryrarebot;
 
+import com.veryrarejosh.veryrarebot.commands.ContextMenuCommands;
 import com.veryrarejosh.veryrarebot.commands.GeneralCommands;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -46,6 +47,7 @@ public class veryrarebot {
 
         //Register listeners
         shardManager.addEventListener(
+                new ContextMenuCommands(),
                 new GeneralCommands());
     }
 
