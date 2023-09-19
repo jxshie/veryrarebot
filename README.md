@@ -4,11 +4,9 @@ A Discord bot made just for fun, and something to work on in my free time that i
 
 Created with Discord JDA - https://github.com/DV8FromTheWorld/JDA
 
-Hosted at - https://www.heroku.com/
-
 # Add veryrarebot to your server
 
-Invite link - https://discord.com/api/oauth2/authorize?client_id=1042952714260320286&permissions=8&scope=bot
+No longer being hosted.
 
 # Commands
 
